@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>红衣大炮 · 历史锻造者</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(145deg, #2b2b2b 0%, #1e1e1e 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+        }
+
+        /* 主卡片容器 */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.07);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 215, 140, 0.2);
+            border-radius: 3rem 3rem 2rem 2rem;
+            box-shadow: 0 30px 50px rgba(0, 0, 0, 0.7), inset 0 0 0 1px rgba(255, 200, 100, 0.1);
+            max-width: 1300px;
+            width: 100%;
+            padding: 2.5rem 2rem;
+            transition: all 0.2s ease;
+        }
+
+        /* 登录区域 */
+        #loginContainer {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 60vh;
+            color: #f0e6d2;
+        }
+
+        .login-header {
+            font-size: 3rem;
+            font-weight: 700;
+            letter-spacing: 0.2rem;
+            text-shadow: 0 2px 10px #ffb34780;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .login-header span {
+            background: #b45f2b;
+            font-size: 1.4rem;
+            padding: 0.3rem 1.2rem;
+            border-radius: 40px;
+            border: 1px solid #f6b83d;
+            color: #ffefcf;
+            font-weight: 400;
+        }
+
+        .login-box {
+            background: rgba(30, 30, 30, 0.8);
+            border-radius: 48px;
+            padding: 2.5rem 2rem;
+            width: 100%;
+            max-width: 550px;
+            border: 1px solid #ffc28530;
+            box-shadow: 0 20px 30px -10px black;
+        }
+
+        .question {
+            margin-bottom: 2rem;
+        }
+
+        .question label {
+            display: block;
+            font-size: 1.3rem;
+            font-weight: 500;
+            margin-bottom: 0.8rem;
+            color: #ffdba4;
+        }
+
+        .question input {
+            width: 100%;
+            background: #3a2e22;
+            border: 2px solid #735e41;
+            border-radius: 60px;
+            padding: 1rem 1.5rem;
+            font-size: 1.2rem;
+            color: #faf0d7;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .question input:focus {
+            border-color: #f3a446;
+            background: #2f241b;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 2.5rem;
+            background: #2a241e;
+            padding: 1rem 2rem;
+            border-radius: 60px;
+            border: 1px solid #7a6234;
+        }
+
+        .radio-group div {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .radio-group input[type="radio"] {
+            appearance: none;
+            width: 1.4rem;
+            height: 1.4rem;
+            background: #221d17;
+            border: 2px solid #bc8f4f;
+            border-radius: 50%;
+            transition: 0.1s;
+            cursor: pointer;
+        }
+
+        .radio-group input[type="radio"]:checked {
+            background: #f3a446;
+            border-color: #fae1b1;
+            box-shadow: 0 0 10px #f90;
+        }
+
+        .radio-group label {
+            font-size: 1.2rem;
+            color: #efdbbe;
+        }
+
+        .login-btn {
+            background: #cb7b3c;
+            border: none;
+            font-size: 1.8rem;
+            font-weight: bold;
+            padding: 1rem 2rem;
+            border-radius: 60px;
+            width: 100%;
+            color: #2a1e12;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 8px 0 #6f3f17;
+            margin-top: 2rem;
+            border: 1px solid #ffd58c;
+        }
+
+        .login-btn:active {
+            transform: translateY(5px);
+            box-shadow: 0 3px 0 #6f3f17;
+        }
+
+        .error-msg {
+            color: #ff9f6e;
+            margin-top: 1rem;
+            font-size: 1.2rem;
+            text-align: center;
+            font-weight: 300;
+        }
+
+        /* 主内容区域 */
+        #mainContent {
+            display: none;
+            color: #f2e3cf;
+            animation: fadePop 0.4s ease;
+        }
+
+        @keyframes fadePop {
+            0% { opacity: 0; transform: scale(0.98); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        .badge-fun {
+            display: inline-block;
+            background: #c9a155;
+            color: #241e14;
+            font-weight: 600;
+            padding: 0.3rem 1.2rem;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+            border: 1px solid #fad393;
+            box-shadow: inset 0 -1px 3px #4f3a1e;
+        }
+
+        h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            line-height: 1.1;
+            text-shadow: 3px 3px 0 #6b4528;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .subboom {
+            font-size: 1.3rem;
+            color: #ebc07e;
+            margin-bottom: 2rem;
+            border-left: 6px solid #f90;
+            padding-left: 1.2rem;
+            font-style: italic;
+        }
+
+        .model-link-card {
+            background: #2d251e;
+            border-radius: 2rem;
+            padding: 1.5rem 2rem;
+            margin: 2rem 0 2.5rem 0;
+            border: 2px solid #7a6343;
+            box-shadow: 0 0 20px #ffb34730;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .model-link-card .left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .model-link-card .left a {
+            color: #ffcd94;
+            text-decoration: none;
+            border-bottom: 2px dashed #d5944c;
+            font-weight: 600;
+            word-break: break-all;
+        }
+
+        .extract-code {
+            background: #1e1610;
+            padding: 0.6rem 1.4rem;
+            border-radius: 60px;
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #ffe9b6;
+            letter-spacing: 2px;
+            border: 1px solid #b87e3f;
+        }
+
+        .remix-note {
+            background: #3a2f25;
+            border-radius: 1.5rem;
+            padding: 1rem 1.8rem;
+            margin: 1.5rem 0;
+            font-size: 1.15rem;
+            border-left: 10px solid #f6933a;
+        }
+
+        .image-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin: 2.5rem 0;
+            justify-content: center;
+        }
+
+        .image-row img {
+            max-width: 100%;
+            width: calc(50% - 0.75rem);
+            min-width: 280px;
+            border-radius: 30px;
+            border: 3px solid #ad7b4b;
+            box-shadow: 0 15px 20px -8px black;
+            transition: transform 0.3s ease;
+            background: #5b4a33;
+            object-fit: cover;
+            aspect-ratio: 16/9;
+        }
+
+        .image-row img:hover {
+            transform: scale(1.02);
+            border-color: #e5a759;
+        }
+
+        .history-text {
+            background: rgba(0, 0, 0, 0.35);
+            border-radius: 2rem;
+            padding: 2rem 2.2rem;
+            margin: 2rem 0;
+            backdrop-filter: blur(4px);
+            border: 1px solid #b5905d;
+            box-shadow: inset 0 0 20px #2f2a1f;
+        }
+
+        .history-text h2 {
+            font-size: 2rem;
+            margin: 2rem 0 1rem 0;
+            border-bottom: 3px solid #ffb144;
+            padding-bottom: 0.5rem;
+            display: inline-block;
+        }
+
+        .history-text h2:first-of-type {
+            margin-top: 0.2rem;
+        }
+
+        .history-text h3 {
+            font-size: 1.7rem;
+            color: #fdc78a;
+            margin: 1.5rem 0 0.8rem;
+            font-weight: 600;
+        }
+
+        .history-text h4 {
+            font-size: 1.4rem;
+            margin: 1.2rem 0 0.3rem;
+            color: #f5ba70;
+        }
+
+        .history-text p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin: 1rem 0;
+        }
+
+        .history-text ul {
+            margin: 0.5rem 0 1.5rem 2rem;
+            font-size: 1.2rem;
+            line-height: 1.6;
+        }
+
+        .history-text li {
+            margin: 0.5rem 0;
+            list-style-type: '🔥 ';
+        }
+
+        .history-text li::marker {
+            color: #ff9933;
+            font-size: 1.3rem;
+        }
+
+        .video-section {
+            margin: 3rem 0 1rem;
+        }
+
+        .video-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin-top: 1.5rem;
+        }
+
+        .video-grid iframe {
+            flex: 1 1 400px;
+            height: 250px;
+            border-radius: 28px;
+            border: 3px solid #c1954a;
+            background: #281f16;
+            box-shadow: 0 20px 25px -10px black;
+        }
+
+        .footer-remark {
+            margin-top: 4rem;
+            text-align: center;
+            font-size: 1.2rem;
+            color: #bca470;
+            border-top: 2px solid #6b5436;
+            padding-top: 2rem;
+        }
+
+        .footer-remark a {
+            color: #ffe2a3;
+            text-decoration: none;
+        }
+
+        .coin-emoji {
+            font-size: 2rem;
+            vertical-align: middle;
+            filter: drop-shadow(0 2px 3px gold);
+        }
+    </style>
+</head>
+<body>
+    <div class="glass-card">
+        <!-- 登录界面 -->
+        <div id="loginContainer">
+            <div class="login-header">
+                ⚔️ 登录 · 红衣武库 <span>作者认证</span>
+            </div>
+            <div class="login-box">
+                <div class="question">
+                    <label>📝 作者是？</label>
+                    <input type="text" id="authorInput" placeholder="输入大名" value="">
+                </div>
+                <div class="question">
+                    <label>🏫 学校是哪所？</label>
+                    <div class="radio-group">
+                        <div>
+                            <input type="radio" name="school" id="schoolA" value="A">
+                            <label for="schoolA">A. 湖塘实验中学</label>
+                        </div>
+                        <div>
+                            <input type="radio" name="school" id="schoolB" value="B">
+                            <label for="schoolB">B. 淹城初中</label>
+                        </div>
+                    </div>
+                </div>
+                <button class="login-btn" id="loginBtn">⏫ 验证身份 · 进入</button>
+                <div id="loginError" class="error-msg"></div>
+                <div style="margin-top: 2rem; font-size: 1rem; color: #ac9e86; text-align: center; border-top: 1px dashed #5e4f3c; padding-top: 1rem;">
+                    💡 提示：没有滴
+                </div>
+            </div>
+        </div>
+
+        <!-- 主内容（默认隐藏） -->
+        <div id="mainContent">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+                <h1>🧨 红衣大炮 <span class="badge-fun">明末 · 顶流网红</span></h1>
+                <div class="badge-fun" style="font-size: 1.2rem;">⚡ 3D打印版 · 亲自调试</div>
+            </div>
+            <div class="subboom">
+                “一炮糜烂数十里？nonono——但轰塌城墙是真的猛！”
+            </div>
+
+            <!-- 模型链接（自己打印哒） -->
+            <div class="model-link-card">
+                <div class="left">
+                    <span>📦 3D模型文件（非工艺品！自己打印）</span>
+                    <a href="https://pan.quark.cn/s/df34d64f791d" target="_blank">https://pan.quark.cn/s/df34d64f791d</a>
+                </div>
+                <div class="extract-code">
+                    🔑 提取码 spBy
+                </div>
+            </div>
+
+            <!-- 制作絮叨（符合提示框之后的平静） -->
+            <div class="remix-note">
+                <span style="font-size: 1.6rem; margin-right: 10px;">🤖</span> 
+                <strong>emm 3D模型由混元生成，我略微添加了一些东西；网页由DeepSeek生成（本人仗着自己稍微看得懂代码 加了点东西进去...）（调试也很烦啊）还要在github上挂网站 搞域名 制作长达4小时，制作不易，麻烦给个硬币~</strong> 
+                <span class="coin-emoji">🪙🪙🪙</span>
+            </div>
+
+            <!-- 两张图片（需要自己放在同路径：1.webp 2.webp） -->
+            <div class="image-row">
+                <img src="1.webp" alt="红衣大炮实物/复原图1" onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MDAiIGhlaWdodD0iMjUwIiB2aWV3Qm94PSIwIDAgNDAwIDI1MCI+PHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIyNTAiIGZpbGw9IiM1YjRiMzMiLz48dGV4dCB4PSI1MCIgeT0iMTI1IiBmaWxsPSIjZTNiYzc4IiBmb250LWZhbWlseT0iU2Vnb2UgVUkiIGZvbnQtc2l6ZT0iMjAiPuacquWbvuW8gOaYr+WbvuWutu+8gTEud2VicDwvdGV4dD48L3N2Zz4=';">
+                <img src="2.webp" alt="红衣大炮实物/复原图2" onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MDAiIGhlaWdodD0iMjUwIiB2aWV3Qm94PSIwIDAgNDAwIDI1MCI+PHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIyNTAiIGZpbGw9IiM0YzNhMjkiLz48dGV4dCB4PSI1MCIgeT0iMTI1IiBmaWxsPSIjZTNiYzc4IiBmb250LWZhbWlseT0iU2Vnb2UgVUkiIGZvbnQtc2l6ZT0iMjAiPui/meS4gWflu7blkIjpgILvvIwyLndlYnA8L3RleHQ+PC9zdmc+';">
+            </div>
+
+            <!-- 长文本历史区域（精心保留原梗） -->
+            <div class="history-text">
+                <p style="font-size:1.3rem; font-weight:500;">“红衣大炮”并非人名，而是明清之际一种威力巨大的“明星武器”。它出身欧洲，在明末清初的中国大地上，上演了一出“你方唱罢我登场”的权力游戏，最终见证了王朝的更迭。</p>
+
+                <h2>📜 它是什么炮？</h2>
+                <ul>
+                    <li><strong>出身：</strong>16世纪欧洲的前装滑膛加农炮，是当时世界顶级的中型舰炮/攻城炮。</li>
+                    <li><strong>规格：</strong>炮管长约2-3米，口径100-130毫米，炮身呈纺锤形，重达数吨。</li>
+                    <li><strong>威力：</strong>发射实心铁弹等，能“洞裂石城，震数十里”，有效射程约500-1500米，最大可达2.5公里。</li>
+                    <li><strong>名称：</strong>
+                        <ul style="margin-left:1.5rem; list-style-type:'• ';">
+                            <li>红夷大炮：明代称呼。“红夷”指荷兰、葡萄牙等“红毛番”，因炮身常盖红布，后讹为“红衣”。</li>
+                            <li>红衣大炮：清代称呼。关于改名，学界有“避讳说”和“音近讹写说”，尚无定论。</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h2>🚀 技术特点：为何如此强大？</h2>
+                <p>相较于明军早期的“碗口铳”、“佛朗机”等火器，红夷大炮堪称“降维打击”：</p>
+                <ul>
+                    <li><strong>炮管长，膛压稳：</strong>炮管细长（倍径20-40），且从炮口到炮尾逐渐加粗，能承受更大膛压，使弹丸初速更快、射程更远。</li>
+                    <li><strong>炮架巧，射角准：</strong>炮身两侧有炮耳，可架在炮车上调整射角；配有准星和照门，能按抛物线计算弹道，精度远超旧式火炮。</li>
+                    <li><strong>材质精，工艺佳：</strong>采用泥模整体铸造，并发展出“铁芯铜体”等复合工艺，在提高强度的同时降低了成本。</li>
+                    <li><strong>弹药狠，威力大：</strong>可发射数公斤至十公斤的实心弹、链弹、霰弹等，以巨大动能撞击目标，破坏力惊人。</li>
+                </ul>
+                <p>当然，它也有短板：</p>
+                <ul>
+                    <li><strong>机动性差：</strong>炮体笨重，依赖炮车，转移困难，适合阵地战，不擅野战追击。</li>
+                    <li><strong>射速极慢：</strong>前装、滑膛、点火的操作流程繁琐，熟练炮手约2分钟才能发射一发。</li>
+                    <li><strong>操作复杂：</strong>对炮手训练、火药配比、炮位选择要求高，否则易炸膛或打偏。</li>
+                </ul>
+
+                <h2>🌏 传入中国：一波三折的“神器”之路</h2>
+                <ul>
+                    <li><strong>初识神威 (1604年)：</strong>明军在福建沿海首次遭遇荷兰战船，旧式火器被对方“红夷大炮”轻松压制，见识到其“一缕清烟，应手糜烂”的恐怖威力。</li>
+                    <li><strong>官方引进 (1620年)：</strong>明朝从沉没的英国商船“独角兽号”上打捞出22门英制舰炮，这是首批成规模引进的红夷大炮。</li>
+                    <li><strong>澳门代工：</strong>因需求巨大，明朝以减免租金为条件，委托当时远东技术最好的澳门“卜加劳铸炮厂”代工生产，并学习技术。</li>
+                </ul>
+
+                <h2>⚔️ 战绩簿：改变历史的炮火</h2>
+                <h3>明朝篇：力挽狂澜的“镇国大将军”</h3>
+                <ul>
+                    <li><strong>宁远之战 (1626年) - 首秀封神</strong><br>背景：努尔哈赤率13万大军围攻宁远，守将袁崇焕仅率2万明军死守。<br>战况：袁崇焕将11门红夷大炮架于城头，居高临下轰击。后金军队“血肉横飞，尸积如山”，攻城战术完全失效。<br>战果：努尔哈赤遭遇起兵以来首次大败，不久后去世。此战明军大胜，红夷大炮一战封神，被敕封为“安边靖虏镇国大将军”。</li>
+                    <li><strong>宁锦之战 (1627年) - 再显神威</strong><br>皇太极卷土重来，再次被守城的红夷大炮打得大败而逃，明军成功守住宁远、锦州防线。</li>
+                </ul>
+                <h3>清朝篇：从“学生”到“王者”</h3>
+                <ul>
+                    <li><strong>仿制成功 (1631年)</strong> 后金俘虏明朝工匠刘汉，成功仿制出西洋大炮，命名为“天佑助威大将军”，并组建乌真超哈（重炮兵）部队，实现了从购买到自产的跨越。</li>
+                    <li><strong>松锦之战 (1640-1642年) - 攻守易形</strong> 清军凭借红衣大炮昼夜猛轰，先是轰塌锦州城墙二十余丈，后在松山围困明军，最终迫使洪承畴投降，明军辽西精锐尽失，山海关外防线崩溃。</li>
+                    <li><strong>入关定鼎 (1644-1645年)</strong>
+                        <ul><li>破潼关：重创李自成的大顺军，迫使其放弃西安南逃。</li>
+                        <li>陷扬州：用红衣大炮轰开城墙，史可法壮烈牺牲。此役后，清廷对江南的控制力大大增强。</li></ul>
+                    </li>
+                    <li><strong>巩固江山 (17-18世纪)</strong> 在平定三藩之乱、雅克萨之战、平定噶尔丹叛乱等战争中，红衣大炮都是清军攻坚拔寨的主力。康熙年间，比利时传教士南怀仁奉命督造了900多门新式火炮，使红衣大炮的发展达到顶峰。</li>
+                </ul>
+
+                <h2>📉 英雄迟暮：从“神器”到“废铁”</h2>
+                <p>进入19世纪，红衣大炮在与西方列强的碰撞中彻底落伍：</p>
+                <ul>
+                    <li><strong>技术停滞：</strong>清军仍沿用落后的泥模铸造和手工加工，炮身常有沙眼，炸膛频发。而西方已采用动力机床进行精密加工，并发展了线膛炮、爆破弹等新式武器。</li>
+                    <li><strong>鸦片战争 (1840-1842年)：</strong>清军虎门炮台的重炮射程和威力远不及英舰，被动挨打。</li>
+                    <li><strong>后继乏力：</strong>第二次鸦片战争后，江阴要塞的万斤铁炮“耀威大将军”依然无法抗衡英军的阿姆斯特朗炮。</li>
+                </ul>
+                <p>最终，这款曾在明清鼎革之际叱咤风云的“神器”，在工业化时代的炮火中黯然退场。</p>
+            </div>
+
+            <!-- B站视频区 -->
+            <div class="video-section">
+                <h2 style="font-size:2rem; display: flex; gap:5px;">📺 搬砖来的B站视频 <span style="font-size:1rem; align-self:flex-end;">（过瘾加倍）</span></h2>
+                <div class="video-grid">
+                    <iframe src="https://player.bilibili.com/player.html?bvid=BV18mUSB5ELg&page=1&autoplay=0&muted=0" frameborder="0" allowfullscreen="true" scrolling="no"></iframe>
+                    <iframe src="https://player.bilibili.com/player.html?bvid=BV1Ku41167Fz&page=1&autoplay=0&muted=0" frameborder="0" allowfullscreen="true" scrolling="no"></iframe>
+                </div>
+            </div>
+
+            <!-- 小尾巴 -->
+            <div class="footer-remark">
+                <span>🧨 大炮一响 · 历史两千响 | 页面由DeepSeek生成（本人仗着自己稍微看得懂代码 加了点东西进去...），模型自己打印，调试四小时，给个硬币吧 🪙</span><br>
+                <span style="font-size:1rem;">📸 图片 1.webp & 2.webp 放同一目录，视频来自B站，侵删</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            const loginContainer = document.getElementById('loginContainer');
+            const mainContent = document.getElementById('mainContent');
+            const authorInput = document.getElementById('authorInput');
+            const schoolA = document.getElementById('schoolA');
+            const schoolB = document.getElementById('schoolB');
+            const loginBtn = document.getElementById('loginBtn');
+            const loginError = document.getElementById('loginError');
+
+            // 检查之前是否登录过（如果sessionStorage有标记，直接显示主内容，但不再弹alert）
+            const isLogged = sessionStorage.getItem('cannonLogged') === 'true';
+
+            if (isLogged) {
+                // 直接展示主内容，隐藏登录
+                loginContainer.style.display = 'none';
+                mainContent.style.display = 'block';
+                // 注意：不再弹出alert（因为已经弹过了）
+            } else {
+                loginContainer.style.display = 'flex';
+                mainContent.style.display = 'none';
+            }
+
+            loginBtn.addEventListener('click', function() {
+                const author = authorInput.value.trim();
+                const schoolSelected = schoolA.checked ? 'A' : schoolB.checked ? 'B' : null;
+
+                if (author === '刘鸿铭' && schoolSelected === 'A') {
+                    // 验证成功
+                    loginError.textContent = '';
+                    // 隐藏登录，显示主内容
+                    loginContainer.style.display = 'none';
+                    mainContent.style.display = 'block';
+
+                    // 设置登录标记
+                    sessionStorage.setItem('cannonLogged', 'true');
+
+                    // 弹出提示框（完全按照要求）
+                    alert('emm 3D模型由混元生成 我略微添加了一些东西 网页由DeepSeek生成（本人仗着自己稍微看得懂代码 加了点东西进去...）（调试是也很烦啊）制作长达四小时 制作不易 麻烦给个硬币');
+
+                    // 附加小彩蛋：控制台输出
+                    console.log('%c🔥 红衣大炮 3D 已就绪！硬币拿来！', 'background: #b45309; color: #ffd; font-size: 14px; padding: 4px; border-radius: 6px;');
+                } else {
+                    // 验证失败
+                    loginError.textContent = '❌ 验证失败：作者名不对或学校选错了（答案是111122222）';
+                }
+            });
+
+            // 可选：按回车触发生成
+            authorInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') loginBtn.click();
+            });
+        })();
+    </script>
+    <!-- 注：图片1.webp,2.webp需与html放在同一目录；视频嵌入已适配移动端 -->
+</body>
+</html>
